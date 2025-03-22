@@ -1,0 +1,40 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.*
+
+# Lambda zip files
+*.zip
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# AWS credentials (just in case)
+.aws/
+
+# Logs
+logs/
+*.log
+
+# VSCode settings
+.vscode/
+
+# Lambda build artifacts
+lambdas/**/node_modules/
+lambdas/**/dist/
+
+# Postman
+.postman/
+
+# Python virtual env (if used in testing or tooling)
+.venv/
+venv/
+
+# Mac metadata
+Icon?

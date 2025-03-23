@@ -115,7 +115,6 @@ curl -X GET https://<API_URL>/user-info \
 ### 🧨 Cleanup Script
 
 To delete all resources created by this project (CloudFormation stack, Lambdas, DynamoDB, API Gateway) and clean up S3 zip files.
-Update `destroy.sh` with your bucket name.
  
 Run:
 

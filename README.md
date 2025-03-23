@@ -36,23 +36,22 @@ cd user-management-api
 
 ### 2. Set Up AWS CLI
 
-Install AWS CLI and configure credentials:
+Install AWS CLI and configure your credentials:
 
 ```bash
 aws configure
 ```
 
-### 3. Create S3 Bucket
+### 3. Create a `.env` File
 
-Create a bucket to store Lambda code zips:
+Create a `.env` file in the project root and add:
 
-```bash
-aws s3 mb s3://your-unique-bucket-name
+```env
+S3_BUCKET=your-unique-bucket-name
+JWT_SECRET=yourSuperSecretKey
 ```
 
-Update `deploy.sh` with your bucket name.
-
-### 4. Deploy
+### 4. Deploy the Stack
 
 ```bash
 chmod +x deploy.sh
@@ -60,9 +59,12 @@ chmod +x deploy.sh
 ```
 
 This will:
-- Zip and upload Lambda functions
-- Deploy full infrastructure using CloudFormation
-- Print your API Gateway URL
+
+- Install dependencies for all Lambda functions  
+- Zip and upload the code to S3  
+- Automatically create the S3 bucket (if it doesn't exist)  
+- Deploy the infrastructure using CloudFormation  
+- Output the API Gateway base URL for testing
 
 ---
 

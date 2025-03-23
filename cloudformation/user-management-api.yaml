@@ -8,6 +8,9 @@ Parameters:
   CodeS3Key:
     Type: String
     Description: S3 key (folder path) where Lambda zips are stored
+  JwtSecret:
+    Type: String
+    Description: Secret key for JWT signing
 
 Resources:
 
@@ -79,7 +82,7 @@ Resources:
       Environment:
         Variables:
           USERS_TABLE: !Ref UsersTable
-          JWT_SECRET: "your_jwt_secret"
+          JWT_SECRET: !Ref JwtSecret
 
   GetUserInfoFunction:
     Type: AWS::Lambda::Function
@@ -94,7 +97,7 @@ Resources:
       Environment:
         Variables:
           USERS_TABLE: !Ref UsersTable
-          JWT_SECRET: "your_jwt_secret"
+          JWT_SECRET: !Ref JwtSecret
 
   ApiGateway:
     Type: AWS::ApiGateway::RestApi

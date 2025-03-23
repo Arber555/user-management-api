@@ -1,5 +1,9 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
+const {
+  DynamoDBDocumentClient,
+  PutCommand,
+  GetCommand,
+} = require("@aws-sdk/lib-dynamodb");
 const bcrypt = require("bcryptjs");
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient());
@@ -10,10 +14,18 @@ exports.handler = async (event) => {
     const { username, password, email } = JSON.parse(event.body || "{}");
 
     // Username validation
-    if (!username || typeof username !== "string") {
+    if (
+      !username ||
+      typeof username !== "string" ||
+      username.trim().length === 0 ||
+      !/^[a-zA-Z0-9_]+$/.test(username)
+    ) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "Username is required" }),
+        body: JSON.stringify({
+          message:
+            "Username must be alphanumeric and cannot include spaces or special characters.",
+        }),
       };
     }
 
@@ -28,7 +40,8 @@ exports.handler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: "Password must be at least 8 characters, include one uppercase letter and one number",
+          message:
+            "Password must be at least 8 characters, include one uppercase letter and one number",
         }),
       };
     }
@@ -42,10 +55,12 @@ exports.handler = async (event) => {
     }
 
     // Check if user already exists
-    const existing = await client.send(new GetCommand({
-      TableName: USERS_TABLE,
-      Key: { username },
-    }));
+    const existing = await client.send(
+      new GetCommand({
+        TableName: USERS_TABLE,
+        Key: { username },
+      })
+    );
 
     if (existing.Item) {
       return {
@@ -64,10 +79,12 @@ exports.handler = async (event) => {
 
     if (email) newUser.email = email;
 
-    await client.send(new PutCommand({
-      TableName: USERS_TABLE,
-      Item: newUser,
-    }));
+    await client.send(
+      new PutCommand({
+        TableName: USERS_TABLE,
+        Item: newUser,
+      })
+    );
 
     return {
       statusCode: 201,
@@ -77,7 +94,9 @@ exports.handler = async (event) => {
     console.error("Register error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Registration failed. Please try again." }),
+      body: JSON.stringify({
+        message: "Registration failed. Please try again.",
+      }),
     };
   }
 };

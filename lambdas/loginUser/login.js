@@ -12,13 +12,18 @@ exports.handler = async (event) => {
     const { username, password } = JSON.parse(event.body || "{}");
 
     if (!username || !password) {
-      return { statusCode: 400, body: JSON.stringify({ message: "Username and password required" }) };
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Username and password required" }),
+      };
     }
 
-    const result = await client.send(new GetCommand({
-      TableName: USERS_TABLE,
-      Key: { username },
-    }));
+    const result = await client.send(
+      new GetCommand({
+        TableName: USERS_TABLE,
+        Key: { username },
+      })
+    );
 
     const user = result.Item;
 

@@ -8,22 +8,33 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.handler = async (event) => {
   try {
-    const authHeader = event.headers.Authorization || event.headers.authorization;
+    const authHeader =
+      event.headers.Authorization || event.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return { statusCode: 401, body: JSON.stringify({ message: "Missing or invalid Authorization header" }) };
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "Missing or invalid Authorization header",
+        }),
+      };
     }
 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    const result = await client.send(new GetCommand({
-      TableName: USERS_TABLE,
-      Key: { username: decoded.username },
-    }));
+    const result = await client.send(
+      new GetCommand({
+        TableName: USERS_TABLE,
+        Key: { username: decoded.username },
+      })
+    );
 
     if (!result.Item) {
-      return { statusCode: 404, body: JSON.stringify({ message: "User not found" }) };
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "User not found" }),
+      };
     }
 
     const { passwordHash, ...userInfo } = result.Item;
@@ -36,7 +47,10 @@ exports.handler = async (event) => {
     console.error("Get user info error:", err);
 
     if (err.name === "TokenExpiredError") {
-      return { statusCode: 401, body: JSON.stringify({ message: "Token expired" }) };
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: "Token expired" }),
+      };
     }
 
     return {

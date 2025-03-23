@@ -30,8 +30,8 @@ This project implements a fully serverless user management system using AWS serv
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/yourname/serverless-user-api.git
-cd serverless-user-api
+git clone https://github.com/Arber555/user-management-api.git
+cd user-management-api
 ```
 
 ### 2. Set Up AWS CLI
